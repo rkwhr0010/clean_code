@@ -48,3 +48,27 @@ class Ex002_2 {
         return flaggedCells;
     }
 }
+
+class Ex002_3 {
+    //지뢰찾기 게임이라는 것을 알아냈다.
+
+
+    List<Cell> gameBoard = new ArrayList<>();
+
+    public List<Cell> getFlaggedCells(){
+        List<Cell> flaggedCells = new ArrayList<>();
+        gameBoard.stream()
+            .filter(cell -> cell[STATUS_VALUE] == FLAGGED) 
+            .forEach(flaggedCells::add);
+            
+        return flaggedCells;
+    }
+
+    class Cell {
+        private static final int FLAGGED = 4;
+        private static final int STATUS_VALUE = 0;
+        private boolean flagged;
+
+    }
+
+}
