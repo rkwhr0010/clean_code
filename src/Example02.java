@@ -133,3 +133,33 @@ class Ex005 {
     //좋은 예
     private Date modificationTimestamp;
 }
+
+/*
+ * 검색하기 쉬운 이름을 사용하라
+ */
+class Ex006 {
+    void bad() {
+        //예시 용 변수
+        int s = 0;
+        int[] t = null;
+
+        for (int j = 0; j < 34; j++ ) {
+            s += (t[j] * 4 ) / 5;
+        }
+    }
+}
+class Ex006_2 {
+    void good() {
+        //예시 용 변수
+        int[] taskEstimate = null;
+        int realDaysPerIdealDay = 4;
+        final int WORK_DAYS_PER_WEEK = 5;
+        int sum = 0;
+
+        for (int j = 0; j < WORK_DAYS_PER_WEEK; j++ ) {
+            int realTaskDays = taskEstimate[j] * realDaysPerIdealDay;
+            int realTaskWeeks = (realTaskDays / WORK_DAYS_PER_WEEK);
+            sum += realTaskWeeks;
+        }
+    }
+}
