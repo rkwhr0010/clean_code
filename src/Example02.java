@@ -108,3 +108,20 @@ class Ex003_2 {
         }
     }
 }
+//의미 있게 구분하라
+class Ex004 {
+    //나쁜 이름
+    public static void copyChars(char[] a1, char[] a2){
+        for(int i = 0; i < a1.length; i++){
+            a2[i] = a1[i];
+        }
+    }
+}
+class Ex004_2 {
+    //의미가 분명한 좋은 이름
+    public static void copyChars(char[] source, char[] destination){
+        for(int i = 0; i < source.length; i++){
+            destination[i] = source[i];
+        }
+    }
+}
