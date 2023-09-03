@@ -125,3 +125,11 @@ class Ex004_2 {
         }
     }
 }
+
+//발음하기 쉬운 이름을 사용하라
+class Ex005 {
+    //안 좋은 예
+    private Date modymdhms; //y년, m월, d일, h시, m분, s초;
+    //좋은 예
+    private Date modificationTimestamp;
+}
