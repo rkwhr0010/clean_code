@@ -1,4 +1,3 @@
-import java.lang.invoke.ClassSpecializer.Factory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,6 +69,42 @@ class Ex002_3 {
 
         public boolean isFlagged() {
             return FLAGGED == status[STATUS_VALUE];
+        }
+    }
+}
+
+//그릇된 정보를 피하라
+class Ex003 {
+    //자료구조와 관련된 이름 조심히
+    class Account {}
+
+    class AccountList{} // 안 좋은 이름 마치 List를 구현한 것 처럼 느껴진다.
+
+    //GOOD
+    class AccountGroup{}
+    class Accouts{}
+}
+
+class Ex003_2 {
+    void exam(){
+        //아무 의미없는 임시 변수명 지양
+        int a = 0;
+        int b = 1;
+        if(a == b) {
+            a = 10;
+        }
+    }
+    void exam2(){
+        //아무 의미없는 임시 변수명에, 비슷한 철자까지 더 하면 더 끔찍하다.
+        int i = 0;
+        int l = 1;
+        int I = 2;
+    }
+    void exam3(){
+        //보통 기업들 코딩 컨벤션을 보면, 임시 변수는 아래와 같이
+        //반복문에 같은 곳에만 허용한다.
+        for(int i = 0; i < 10; i++){
+
         }
     }
 }
