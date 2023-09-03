@@ -184,3 +184,39 @@ class Ex007 {
         list.add(obj);
     }
 }
+
+/*
+ * 의미 있는 맥락을 추가하라
+ */
+class Ex008 {
+    //변수들을 쭉 봤을 때 주소 관련된 것임을 알 수 있다. 몇 개만 봐서는 맥락을 알 수 없다.
+    void eaxm() {
+        String firstName, lastName, street, houseNumber, city, state, zipcode;
+        /*
+         * 무언가 하는 코드...
+         */
+    }
+}
+class Ex008_2 {
+    //addr 라는 접두를 추가해 맥략을 분명히 했다.
+    void eaxm() {
+        String addrFirstName, addrLastName, addrStreet
+            , addRhouseNumber, addrCity, addrState, addrZipcode;
+        /*
+         * 무언가 하는 코드...
+         */
+    }
+}
+class Ex008_3 {
+    void eaxm() {
+        Address address = new Address();
+        /*
+         * 무언가 하는 코드...
+         */
+    }
+    //더 좋은 방법은 야에 새로운 클래스로 같은 맥락 변수를 묶는 것이다.
+    class Address {
+        String firstName, lastName, street, houseNumber, city, state, zipcode;
+    }
+
+}
