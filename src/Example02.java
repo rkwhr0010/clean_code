@@ -149,9 +149,9 @@ class Ex006 {
     }
 }
 class Ex006_2 {
-    void good() {
+    int good() {
         //예시 용 변수
-        int[] taskEstimate = null;
+        int[] taskEstimate = new int[0];
         int realDaysPerIdealDay = 4;
         final int WORK_DAYS_PER_WEEK = 5;
         int sum = 0;
@@ -161,5 +161,26 @@ class Ex006_2 {
             int realTaskWeeks = (realTaskDays / WORK_DAYS_PER_WEEK);
             sum += realTaskWeeks;
         }
+
+        return sum;
+    }
+}
+/*
+ * 말장난을 하지마라
+ */
+class Ex007 {
+    //다른 곳도, add 어휘 메서드는 무언 가를 더한 값을 리턴한다.
+    int add(int left, int right) {
+        return left + right;
+    }
+    //무언가 컨테이너에 값을 더하는 메서드가 필요해서
+    //구현하고 이름을 add로 지으면, 기존 add 어휘가 가지는 의미가 두 개가 된다.
+    List<Object> list;
+    void add(Object obj){
+        list.add(obj);
+    }
+    //add 어휘에 일관성을 지키기 위해 insert라는 이름으로 바꾼다.
+    void insert(Object obj){
+        list.add(obj);
     }
 }
