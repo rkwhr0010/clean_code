@@ -1,20 +1,26 @@
 package chap03;
 
 public class HtmlUtil {
-    public static String testableHtml(
+    public static String renderPageWithSetupsAndTeardowns(
             PageData pageData,
             boolean includeSuiteSetup) throws Exception {
-                
-        boolean isTestPage = pageData.hasAttribute("Test");
-        if (isTestPage) {
-            WikiPage wikiPage = pageData.getWikiPage();
-            StringBuffer newPageContent = new StringBuffer();
-            includeSetupPages(includeSuiteSetup, wikiPage, newPageContent);
-            newPageContent.append(pageData.getContent());
-            includeTeardownPages(includeSuiteSetup, wikiPage, newPageContent);
-            pageData.setContent(newPageContent.toString());
+        if (isTestPage(pageData)) {
+            includeSetupAndTeardownPages(pageData, includeSuiteSetup);
         }
         return pageData.getHtml();
+    }
+
+    private static void includeSetupAndTeardownPages(PageData pageData, boolean includeSuiteSetup) {
+        WikiPage wikiPage = pageData.getWikiPage();
+        StringBuffer newPageContent = new StringBuffer();
+        includeSetupPages(includeSuiteSetup, wikiPage, newPageContent);
+        newPageContent.append(pageData.getContent());
+        includeTeardownPages(includeSuiteSetup, wikiPage, newPageContent);
+        pageData.setContent(newPageContent.toString());
+    }
+
+    private static boolean isTestPage(PageData pageData) {
+        return pageData.hasAttribute("Test");
     }
 
     private static void includeTeardownPages(boolean includeSuiteSetup, WikiPage wikiPage, StringBuffer newPageContent) {
