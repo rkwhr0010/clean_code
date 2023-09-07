@@ -1,4 +1,4 @@
-package chap03;
+package chap03.ex01;
 
 public class HtmlUtil {
     public static String renderPageWithSetupsAndTeardowns(
