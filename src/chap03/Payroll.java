@@ -1,7 +1,7 @@
 package chap03;
 
 public class Payroll {
-  public Money calculatePay(Employee e){
+  public Money calculatePay(Employee e) throws InvalidEmployeeType{
     switch (e.type) {
       case COMMISSIONED:
         return calculateCommissionedPay(e);
@@ -38,7 +38,7 @@ class Employee{
 enum SalraryType {
   COMMISSIONED, HOURLY, SALARIED
 }
-class InvalidEmployeeType extends RuntimeException{
+class InvalidEmployeeType extends Exception{
   InvalidEmployeeType(){}
   InvalidEmployeeType(SalraryType type){}
 }
