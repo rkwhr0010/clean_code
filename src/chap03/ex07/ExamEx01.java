@@ -8,26 +8,17 @@ public class ExamEx01 {
   private Logger logger;
 
 
-  String something(Page page) {
-    if(deletePage(page) == E_OK) {
-      if(registry.deleteReference(page.name) == E_OK) {
-        if(configKeys.deleteKey(page.name.makeKey() == E_OK)){
-          logger.info("page deleted");
-        } else {
-          logger.info("configKey not deleted");
-        }
-      } else {
-        logger.info("deleteReference from registry failed");
-      } 
-    } else {
-      logger.info("delete failed");
-      return E_ERROR;
+  void something(Page page) {
+    try {
+      deletePage(page);
+      registry.deleteReference(page.name);
+      configKeys.deleteKey(page.name.makeKey());
+    } catch (Exception e) {
+      logger.info(e.getMessage());
     }
-    
-    return E_OK; 
   }
 
-  private String deletePage(Page page) {
+  private String deletePage(Page page) throws Exception {
     return "";
   }
 
