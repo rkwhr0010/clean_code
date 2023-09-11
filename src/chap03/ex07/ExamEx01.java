@@ -8,14 +8,22 @@ public class ExamEx01 {
   private Logger logger;
 
 
-  void something(Page page) {
+  void delete(Page page) {
     try {
-      deletePage(page);
-      registry.deleteReference(page.name);
-      configKeys.deleteKey(page.name.makeKey());
+      deletePageAndAllReferences(page);
     } catch (Exception e) {
-      logger.info(e.getMessage());
+      logError(e);
     }
+  }
+
+  private void logError(Exception e) {
+    logger.info(e.getMessage());
+  }
+
+  private void deletePageAndAllReferences(Page page) throws Exception {
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
   }
 
   private String deletePage(Page page) throws Exception {
