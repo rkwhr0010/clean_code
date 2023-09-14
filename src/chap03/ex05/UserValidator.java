@@ -11,8 +11,7 @@ public class UserValidator {
       String phrase = crytograher.decrypt(codePhrase, password);
 
       if("Valid Password".equals(phrase)) {
-        Session.initialize();
-
+        Session.finalized();
         return true;
       }
     }
