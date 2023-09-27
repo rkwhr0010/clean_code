@@ -10,22 +10,19 @@ public class DeviceController {
   private Logger logger;
 
   public void sendShutDown() {
-    DeviceHandle handle = getHandle(DEV1);
-    //디바이스 생태 점검
-    if (handle != DeviceHandle.INVALID) {
-      //레코드 필드에 디바이스 상태 저장
-      retrieveDeviceRecord(handle);
-      //디바이스가 일시정지 상태가 아니라면 종료
-      if (recode.getStatus() != DEVICE_SUSPENDED) {
-        pauseDevice(handle);
-        clearDeviceWorkQueue(handle);
-        pauseDevice(handle);
-      } else {
-        logger.log(Level.INFO, "Device suspended. Unable to shutdown");
-      }
-    } else {
-      logger.log(Level.INFO, "Invalid handle for: " + DEV1.toString());
+    try {
+      tryToShutdown();
+    } catch (DeviceShutDownError e) {
+      logger.log(Level.INFO, e);
     }
+  }
+
+  private void tryToShutdown() throws DeviceShutDownError {
+    DeviceHandle handle = getHandle(DEV1);
+      retrieveDeviceRecord(handle);
+      pauseDevice(handle);
+      clearDeviceWorkQueue(handle);
+      pauseDevice(handle);
   }
 
   private void clearDeviceWorkQueue(DeviceHandle handle) {
