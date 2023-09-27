@@ -25,16 +25,29 @@ public class DeviceController {
       pauseDevice(handle);
   }
 
-  private void clearDeviceWorkQueue(DeviceHandle handle) {
+  private void clearDeviceWorkQueue(DeviceHandle handle)  throws DeviceShutDownError {
+    //~~ 하다 안된 경우 가정
+    if(true) {
+      throw new DeviceShutDownError("Invalid handle for: " + DEV1.toString());
+    }
   }
-
-  private void pauseDevice(DeviceHandle handle) {
+  private void pauseDevice(DeviceHandle handle)  throws DeviceShutDownError {
+    //~~ 하다 안된 경우 가정
+    if(true) {
+      throw new DeviceShutDownError("Invalid handle for: " + DEV1.toString());
+    }
   }
-
-  private void retrieveDeviceRecord(DeviceHandle handle) {
+  private void retrieveDeviceRecord(DeviceHandle handle)  throws DeviceShutDownError {
+    //~~ 하다 안된 경우 가정
+    if(true) {
+      throw new DeviceShutDownError("Invalid handle for: " + DEV1.toString());
+    }
   }
-
-  private DeviceHandle getHandle(String dev12) {
+  private DeviceHandle getHandle(String dev12) throws DeviceShutDownError {
+    //~~ 하다 안된 경우 가정
+    if(true) {
+      throw new DeviceShutDownError("Invalid handle for: " + DEV1.toString());
+    }
     return null;
   }
 }
