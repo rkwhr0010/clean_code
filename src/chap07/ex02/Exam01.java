@@ -1,5 +1,7 @@
 package chap07.ex02;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +13,13 @@ public class Exam01 {
     sectionStore.retrieveSection("invlid - file");
   }
 
-  public List<RecordedGrip> retrieveSection(String sectionName) {
-    //실제로 구현할 때까지 비어 있는 더미를 반환한다.
+  public List<RecordedGrip> retrieveSection(String sectionName)
+      throws StorageException {
+    try {//sectionName 잘못된 파일 경로 일부러 넣음
+      FileInputStream stream = new FileInputStream(sectionName);
+    } catch (Exception e) {
+      throw new StorageException("retrieval error", e);
+    }
     return new ArrayList<RecordedGrip>();
   }
 }
