@@ -1,9 +1,7 @@
 package chap07.ex04;
 
-public class MealExpenses {
+public interface MealExpenses {
 
-  public int getTotal() {
-    return 0;
-  }
+  public int getTotal();
 
 }
