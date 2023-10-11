@@ -5,46 +5,87 @@ public class SerializedPageResponderTest extends RegexTest {
 	private PageCrawler crawler;
 	private WikiPage root;
 	private MockRequest request;
-
+	String xml;
+	private PageData data;
+	
 	public void testGetPageHieratchyAsXml() throws Exception {
-		crawler.addPage(root, PathParser.parse("PageOne"));
-		crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-		crawler.addPage(root, PathParser.parse("PageTwo"));
+		makePages("PageOne", "PageOne.ChildOne", "PageTwo");
 
-		request.setResource("root");
-		request.addInput("type", "pages");
-		Responder responder = new SerializedPageResponder();
-		SimpleResponse response = (SimpleResponse) responder.makeResponse(new FitNesseContext(root), request);
-		String xml = response.getContent();
-
-		assertEquals("text/xml", response.getContentType());
-		assertSubString("<name>PageOne</name>", xml);
-		assertSubString("<name>PageTwo</name>", xml);
-		assertSubString("<name>ChildOne</name>", xml);
+		submitRequest("root", "type:pages");
+		
+		assertResponseIsXML();
+		assertResponseContains("<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>");
 	}
 
 	public void testGetPageHieratchyAsXmlDoesntContainSymbolicLinks() throws Exception {
 		WikiPage pageOne = crawler.addPage(root, PathParser.parse("PageOne"));
-		crawler.addPage(root, PathParser.parse("PageOne.ChildOne"));
-		crawler.addPage(root, PathParser.parse("PageTwo"));
+		makePages("PageOne.ChildOne", "PageTwo");
 
-		PageData data = pageOne.getData();
-		WikiPageProperties properties = data.getProperties();
-		WikiPageProperty symLinks = properties.set(SymbolicPage.PROPERTY_NAME);
-		symLinks.set("SymPage", "PageTwo");
-		pageOne.commit(data);
+		addLinkTo(pageOne, "SymPage", "PageTwo");
 
-		request.setResource("root");
-		request.addInput("type", "pages");
+		submitRequest("root", "type:pages");
+		
+		assertResponseIsXML();
+		assertResponseContains("<name>PageOne</name>", "<name>PageTwo</name>", "<name>ChildOne</name>");
+		assertResponseDoesNotContain("SymPage");
+	}
+
+
+
+	public void testGetDataAsHtml() throws Exception {
+		makePageWithContent("TestPageOne", "test page");
+
+		submitRequest("TestPageOne", "type:pages");
+		
+		assertResponseIsXML();
+		assertResponseContains("test page", "<Test");
+	}
+
+	
+	private void assertResponseContains(final String string, final String string2) {
+		assertSubString(string, xml);
+		assertSubString(string2, xml);
+	}
+
+	private void makePageWithContent(final String string, final String string2) {
+		crawler.addPage(root, PathParser.parse(string), string2);
+	}
+	
+	
+	private void assertResponseContains(String string, String string2, String string3) {
+		assertResponseContains(string, string2);
+		assertSubString(string3, xml);
+	}
+
+	private void assertResponseIsXML() {
 		Responder responder = new SerializedPageResponder();
 		SimpleResponse response = (SimpleResponse) responder.makeResponse(new FitNesseContext(root), request);
-		String xml = response.getContent();
-
+		xml = response.getContent();
 		assertEquals("text/xml", response.getContentType());
-		assertSubString("<name>PageOne</name>", xml);
-		assertSubString("<name>PageTwo</name>", xml);
-		assertSubString("<name>ChildOne</name>", xml);
-		assertNotSubString("SymPage", xml);
+	}
+
+	private void submitRequest(final String string, final String string2) {
+		request.setResource(string2);
+		String[] split = string2.split(":");
+		request.addInput(split[0], split[1]);
+	}
+	
+	private void makePages(final String string, final String string2, final String string3) {
+		makePages(string, string2);
+		crawler.addPage(root, PathParser.parse(string3));
+	}
+	
+	private void addLinkTo(WikiPage pageOne, final String string, final String string2) {
+		data = pageOne.getData();
+		WikiPageProperties properties = data.getProperties();
+		WikiPageProperty symLinks = properties.set(SymbolicPage.PROPERTY_NAME);
+		symLinks.set(string, string2);
+		pageOne.commit(data);
+	}
+
+	private void makePages(final String string2, final String string3) {
+		crawler.addPage(root, PathParser.parse(string2));
+		crawler.addPage(root, PathParser.parse(string3));
 	}
 
 	private void assertNotSubString(String string, String xml) {
@@ -52,20 +93,10 @@ public class SerializedPageResponderTest extends RegexTest {
 		
 	}
 
-	public void testGetDataAsHtml() throws Exception {
-		crawler.addPage(root, PathParser.parse("TestPageOne"), "test page");
-
-		request.setResource("TestPageOne");
-		request.addInput("type", "data");
-		Responder responder = new SerializedPageResponder();
-		SimpleResponse response = (SimpleResponse) responder.makeResponse(new FitNesseContext(root), request);
-		String xml = response.getContent();
-
-		assertEquals("text/xml", response.getContentType());
-		assertSubString("test page", xml);
-		assertSubString("<Test", xml);
+	private void assertResponseDoesNotContain(String string) {
+		// TODO Auto-generated method stub
+		
 	}
-	
 	
 	private void assertSubString(String string, String xml) {
 		// TODO Auto-generated method stub
