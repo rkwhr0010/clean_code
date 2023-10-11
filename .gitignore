@@ -1,2 +1,4 @@
 #.class Files
 /bin/**
+.classpath
+.project
