@@ -1,7 +1,6 @@
 package chap09.ex02;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +11,12 @@ public class EnvironmentControllerTest {
 	
 	@Test
 	public void turnOnLoTempAlarmAtThreashold() throws Exception {
+		wayTooCold();
+		assertEquals("HBchL", hw.getState());
+	}
+
+	private void wayTooCold() {
 		hw.setTemp(WAY_TOO_COLD);
 		controller.tic();
-		assertTrue(hw.heaterState());
-		assertTrue(hw.blowerState());
-		assertFalse(hw.coolerState());
-		assertFalse(hw.hiTempAlarm());
-		assertTrue(hw.loTempAlarm());
 	}
 }
