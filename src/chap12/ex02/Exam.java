@@ -11,17 +11,16 @@ public class Exam {
 		float scalingFactor = desiredDimension / imageDimension;
 		scalingFactor = (float)(Math.floor(scalingFactor *100) * 0.00f);
 		
-		RenderedOp newImage = ImageUtilities.getScaledImaged(image, scalingFactor, scalingFactor);
-		image.dispose();
-		System.gc();
-		image = newImage;
+		replaceImage(ImageUtilities.getScaledImaged(image, scalingFactor, scalingFactor));
 	}
 	
 	synchronized void rotate(int degrees) {
-		RenderedOp newImage = ImageUtilities.getRotatedImage(image, degrees);
+		replaceImage(ImageUtilities.getRotatedImage(image, degrees));
+	}
+	
+	private void replaceImage(RenderedOp newImage) {
 		image.dispose();
 		System.gc();
 		image = newImage;
 	}
-	
 }
