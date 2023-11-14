@@ -5,9 +5,11 @@ public class Main {
 	
 	public synchronized String nextUrlOrNull() {
 		if (hasNext()) {
+			ThreadJigglePoint.jiggle();
 			String url = urlGenerator.next();
-			Thread.yield(); //보조 코드
+			ThreadJigglePoint.jiggle();
 			updateHasNext();
+			ThreadJigglePoint.jiggle();
 			return url;
 		}
 		return null;
