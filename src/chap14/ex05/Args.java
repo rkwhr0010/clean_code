@@ -254,4 +254,36 @@ public class Args {
 
 	private class ArgsException extends Exception {
 	}
+	
+
+	/**  
+	 * ###### Args 내부 ######
+	 * 편의상 Args 내부 가장 끝 자리에 추출할 클래스를 정의했다. 
+	 * 사용하지 않으니, 기존 시스템에 영향은 전혀 없다.        
+	 */
+	private class ArgumentMarshaler {
+		private boolean booleanValue = false;
+		
+		public void setBoolean(boolean value) {
+			booleanValue = value;
+		}
+		
+		public boolean getBoolean() {
+			return booleanValue;
+		}
+		
+		
+	}
+	private class BooleanArgumentMarshaler extends ArgumentMarshaler {
+		
+	}
+	
+	private class StringArgumentMarshaler extends ArgumentMarshaler {
+		
+	}
+	
+	private class IntegerArgumentMarshaler extends ArgumentMarshaler {
+		
+	}
 }
+
