@@ -176,7 +176,7 @@ public class Args {
 	}
 	
 	private void setBooleanArg(char argChar, boolean value) {
-		booleanArgs.get(argChar).setBoolean(value);
+		booleanArgs.get(argChar).set("true");
 	}
 	
 	private boolean isBooleanArg(char argChar) {
@@ -243,20 +243,13 @@ public class Args {
 	private class ArgsException extends Exception {
 	}
 	
-
-	/**  
-	 * ###### Args 내부 ######
-	 * 편의상 Args 내부 가장 끝 자리에 추출할 클래스를 정의했다. 
-	 * 사용하지 않으니, 기존 시스템에 영향은 전혀 없다.        
-	 */
-	private class ArgumentMarshaler {
-		private boolean booleanValue = false;
+	
+	private abstract class ArgumentMarshaler {
+		protected boolean booleanValue = false;
 		private String stringValue;
 		private int integerValue;
 		
-		public void setBoolean(boolean value) {
-			booleanValue = value;
-		}
+		public abstract void set(String s);
 		
 		public void setInteger(int i) {
 			integerValue = i;
@@ -280,7 +273,9 @@ public class Args {
 	}
 	
 	private class BooleanArgumentMarshaler extends ArgumentMarshaler {
-		
+		public void set(String s) {
+			booleanValue = true;
+		}
 	}
 	
 	private class StringArgumentMarshaler extends ArgumentMarshaler {
