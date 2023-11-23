@@ -9,7 +9,7 @@ public class Args {
 	private boolean valid = true;
 	private Set<Character> unexpectedArguments = new TreeSet<>();
 	private Map<Character, ArgumentMarshaler> booleanArgs = new HashMap<>();
-	private Map<Character, String> stringArgs = new HashMap<>();
+	private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<>();
 	private Map<Character, Integer> intArgs = new HashMap<>();
  	private Set<Character> argsFound = new HashSet<>();
 	private int currentArgument;
@@ -78,7 +78,7 @@ public class Args {
 	}
 	
 	private void parseStringSchemaFlement(char elementId) {
-		stringArgs.put(elementId, "");
+		stringArgs.put(elementId, new StringArgumentMarshaler());
 	}
 
 	private boolean isStringSchemaElement(String elementTail) {
@@ -162,7 +162,7 @@ public class Args {
 	private void setStringArg(char argCha) throws ArgsException {
 		currentArgument++;
 		try {
-			stringArgs.put(argCha, args[currentArgument]);
+			stringArgs.get(argCha).setString(args[currentArgument]);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			valid = false;
 			errorArgumentId = argCha;
@@ -224,12 +224,9 @@ public class Args {
 		return i == null ? 0 : i;
 	}
 	
-	private String blankIfNull(String s) {
-		return s == null ? "" : s;
-	}
 
 	public String getString(char arg) {
-		return blankIfNull(stringArgs.get(arg));
+		return stringArgs.get(arg).getString();
 	}
 	
 	public int getInt(char arg) {
@@ -259,11 +256,20 @@ public class Args {
 	 */
 	private class ArgumentMarshaler {
 		private boolean booleanValue = false;
+		private String stringValue;
 		
 		public void setBoolean(boolean value) {
 			booleanValue = value;
 		}
 		
+		public void setString(String s) {
+			stringValue = s;
+		}
+		
+		public String getString() {
+			return stringValue == null ? "" : stringValue;
+		}
+
 		public boolean getBoolean() {
 			return booleanValue;
 		}
