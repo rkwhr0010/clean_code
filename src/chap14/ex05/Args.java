@@ -10,7 +10,7 @@ public class Args {
 	private Set<Character> unexpectedArguments = new TreeSet<>();
 	private Map<Character, ArgumentMarshaler> booleanArgs = new HashMap<>();
 	private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<>();
-	private Map<Character, Integer> intArgs = new HashMap<>();
+	private Map<Character, ArgumentMarshaler> intArgs = new HashMap<>();
  	private Set<Character> argsFound = new HashSet<>();
 	private int currentArgument;
 	private char errorArgumentId = '\0';
@@ -74,7 +74,7 @@ public class Args {
 	}
 	
 	private void parseIntegerSchemaFlement(char elementId) {
-		intArgs.put(elementId, 0);
+		intArgs.put(elementId, new IntegerArgumentMarshaler());
 	}
 	
 	private void parseStringSchemaFlement(char elementId) {
@@ -144,7 +144,7 @@ public class Args {
 		String parameter = null;
 		try {
 			parameter = args[currentArgument];
-			intArgs.put(argChar, new Integer(parameter));
+			intArgs.get(argChar).setInteger(Integer.valueOf(parameter));
 		} catch (ArrayIndexOutOfBoundsException e) {
 			valid = false;
 			errorArgumentId = argChar;
@@ -220,17 +220,12 @@ public class Args {
 		return message.toString();
 	}
 	
-	private int zeroIfNull(Integer i) {
-		return i == null ? 0 : i;
-	}
-	
-
 	public String getString(char arg) {
 		return stringArgs.get(arg).getString();
 	}
 	
 	public int getInt(char arg) {
-		return zeroIfNull(intArgs.get(arg));
+		return intArgs.get(arg).getInteger();
 	}
 	
 	public boolean getBoolean(char arg) {
@@ -257,11 +252,20 @@ public class Args {
 	private class ArgumentMarshaler {
 		private boolean booleanValue = false;
 		private String stringValue;
+		private int integerValue;
 		
 		public void setBoolean(boolean value) {
 			booleanValue = value;
 		}
 		
+		public void setInteger(int i) {
+			integerValue = i;
+		}
+		
+		public int getInteger() {
+			return integerValue;
+		}
+
 		public void setString(String s) {
 			stringValue = s;
 		}
