@@ -162,13 +162,13 @@ public class Args {
 	private void setStringArg(char argCha) throws ArgsException {
 		currentArgument++;
 		try {
-			stringArgs.get(argCha).setString(args[currentArgument]);
+			stringArgs.get(argCha).set(args[currentArgument]);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			valid = false;
 			errorArgumentId = argCha;
 			errorCode = ErrorCode.MISSING_STRING;
 			throw new ArgsException();
-		} 
+		}
 	}
 	
 	private boolean isStringArg(char argChar) {
@@ -221,7 +221,8 @@ public class Args {
 	}
 	
 	public String getString(char arg) {
-		return stringArgs.get(arg).getString();
+		ArgumentMarshaler am = stringArgs.get(arg);
+		return am == null ? "" : (String) am.get();
 	}
 	
 	public int getInt(char arg) {
@@ -245,8 +246,6 @@ public class Args {
 	
 	
 	private abstract class ArgumentMarshaler {
-		protected boolean booleanValue = false;
-		private String stringValue;
 		private int integerValue;
 		
 		public abstract void set(String s);
@@ -271,6 +270,8 @@ public class Args {
 	}
 	
 	private class BooleanArgumentMarshaler extends ArgumentMarshaler {
+		private boolean booleanValue = false;
+
 		public void set(String s) {
 			booleanValue = true;
 		}
@@ -281,6 +282,15 @@ public class Args {
 	}
 	
 	private class StringArgumentMarshaler extends ArgumentMarshaler {
+		private String stringValue;
+		
+		public void set(String s) {
+			stringValue = s;
+		}
+		
+		public Object get() {
+			return stringValue;
+		}
 		
 	}
 	
