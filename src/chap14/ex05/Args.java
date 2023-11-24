@@ -229,7 +229,7 @@ public class Args {
 	}
 	
 	public boolean getBoolean(char arg) {
-		return booleanArgs.get(arg).getBoolean();
+		return (Boolean) booleanArgs.get(arg).get();
 	}
 
 	public boolean has(char arg) {
@@ -251,6 +251,8 @@ public class Args {
 		
 		public abstract void set(String s);
 		
+		public abstract Object get();
+		
 		public void setInteger(int i) {
 			integerValue = i;
 		}
@@ -266,15 +268,15 @@ public class Args {
 		public String getString() {
 			return stringValue == null ? "" : stringValue;
 		}
-
-		public boolean getBoolean() {
-			return booleanValue;
-		}
 	}
 	
 	private class BooleanArgumentMarshaler extends ArgumentMarshaler {
 		public void set(String s) {
 			booleanValue = true;
+		}
+
+		public Object get() {
+			return booleanValue;
 		}
 	}
 	
