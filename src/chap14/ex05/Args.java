@@ -144,7 +144,7 @@ public class Args {
 		String parameter = null;
 		try {
 			parameter = args[currentArgument];
-			intArgs.get(argChar).setInteger(Integer.valueOf(parameter));
+			intArgs.get(argChar).set(parameter);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			valid = false;
 			errorArgumentId = argChar;
@@ -226,7 +226,8 @@ public class Args {
 	}
 	
 	public int getInt(char arg) {
-		return intArgs.get(arg).getInteger();
+		ArgumentMarshaler am = intArgs.get(arg);
+		return am == null ? 0 : (int) am.get();
 	}
 	
 	public boolean getBoolean(char arg) {
@@ -246,27 +247,8 @@ public class Args {
 	
 	
 	private abstract class ArgumentMarshaler {
-		private int integerValue;
-		
 		public abstract void set(String s);
-		
 		public abstract Object get();
-		
-		public void setInteger(int i) {
-			integerValue = i;
-		}
-		
-		public int getInteger() {
-			return integerValue;
-		}
-
-		public void setString(String s) {
-			stringValue = s;
-		}
-		
-		public String getString() {
-			return stringValue == null ? "" : stringValue;
-		}
 	}
 	
 	private class BooleanArgumentMarshaler extends ArgumentMarshaler {
@@ -295,7 +277,15 @@ public class Args {
 	}
 	
 	private class IntegerArgumentMarshaler extends ArgumentMarshaler {
-		
+		private int integerValue;
+
+		public void set(String s) {
+			integerValue = Integer.parseInt(s);
+		}
+
+		public Object get() {
+			return integerValue;
+		}
 	}
 }
 
