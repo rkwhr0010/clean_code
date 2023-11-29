@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class Args {
 	private String schema;
@@ -18,29 +17,12 @@ public class Args {
 	private Map<Character, ArgumentMarshaler> marshalers = new HashMap<>();
 	private Set<Character> argsFound = new HashSet<>();
 
-// 	private boolean valid = true;
-// 	private Set<Character> unexpectedArguments = new TreeSet<>();
-//	private char errorArgumentId = '\0';
-//	private String errorParameter = "TILT";
-//	private ArgsException.ErrorCode errorCode = ArgsException.ErrorCode.OK;
-
 	public Args(String schema, String[] args) throws ArgsException {
 		this.schema = schema;
 		this.argsList = Arrays.asList(args);
-//		valid = parse();
 		parse();
 	}
 
-//	private boolean parse() throws ArgsException {
-//		if (schema.length() == 0 && argsList.size() == 0)
-//			return true;
-//		parseSchema();
-//		try {
-//			parseArguments();
-//		} catch (ArgsException e) {
-//		}
-//		return valid;
-//	}
 	private void parse() throws ArgsException {
 		parseSchema();
 		parseArguments();
@@ -101,9 +83,6 @@ public class Args {
 		if (setArgument(argChar))
 			argsFound.add(argChar);
 		else {
-//			unexpectedArguments.add(argChar);
-//			errorCode = ArgsException.ErrorCode.UNEXPECTED_ARGUMENT;
-//			valid = false;
 			throw new ArgsException(ArgsException.ErrorCode.UNEXPECTED_ARGUMENT, argChar, null);
 		}
 	}
@@ -117,8 +96,6 @@ public class Args {
 			m.set(currentArgument);
 			return true;
 		} catch (ArgsException e) {
-//			valid = false;
-//			errorArgumentId = argChar;
 			e.setErrorArgumentId(argChar);
 			throw e;
 		}
@@ -134,37 +111,6 @@ public class Args {
 		else
 			return "";
 	}
-//	ArgsException으로 옮김
-//	public String errorMessage() throws Exception {
-//		switch (errorCode) {
-//		case OK:
-//			throw new Exception("TILT: Should not get here.");
-//		case UNEXPECTED_ARGUMENT:
-//			return unexpectedArgumentMessage();
-//		case MISSING_STRING:
-//			return String.format("Could not find string parameter for -%c.", errorArgumentId);
-//		case INVALID_INTEGER:
-//			return String.format("Argument -%c expects an integer but was '%s'.", errorArgumentId, errorParameter);
-//		case MISSING_INTEGER:
-//			return String.format("Could not find integer parameter for -%c.", errorArgumentId);
-//		case INVALID_DOUBLE:
-//			return String.format("Argument -%c expects an double but was '%s'.", errorArgumentId, errorParameter);
-//		case MISSING_DOUBLE:
-//			return String.format("Could not find double parameter for -%c.", errorArgumentId);
-//		}
-//		return "";
-//	}
-
-//  제거 errorMessage()을 옮기면서, 메서드 인라인 진행
-//	private String unexpectedArgumentMessage() {
-//		StringBuffer message = new StringBuffer("Argument(s) -");
-//		for (char c : unexpectedArguments) {
-//			message.append(c);
-//		}
-//		message.append(" unexpected.");
-//
-//		return message.toString();
-//	}
 
 	public String getString(char arg) {
 		ArgumentMarshaler am = marshalers.get(arg);
@@ -208,11 +154,6 @@ public class Args {
 		return argsFound.contains(arg);
 	}
 	
-//	제거
-//	public boolean isValid() {
-//		return valid;
-//	}
-
 	@SuppressWarnings("all")
 	private class ArgsException extends Exception {
 		private char errorArgumentId = '\0';
@@ -321,7 +262,6 @@ public class Args {
 			try {
 				stringValue = currentArgument.next();
 			} catch (NoSuchElementException e) {
-//				errorCode = ArgsException.ErrorCode.MISSING_INTEGER;
 				throw new ArgsException(ArgsException.ErrorCode.MISSING_INTEGER);
 			}
 		}
@@ -340,11 +280,8 @@ public class Args {
 				parameter = currentArgument.next();
 				integerValue = Integer.parseInt(parameter);
 			} catch (NoSuchElementException e) {
-//				errorCode = ArgsException.ErrorCode.MISSING_STRING;
 				throw new ArgsException(ArgsException.ErrorCode.MISSING_STRING);
 			} catch (NumberFormatException e) {
-//				errorParameter = parameter;
-//				errorCode = ArgsException.ErrorCode.INVALID_INTEGER;
 				throw new ArgsException(ArgsException.ErrorCode.INVALID_INTEGER, parameter);
 			}
 		}
@@ -363,11 +300,8 @@ public class Args {
 				parameter = currentArgument.next();
 				doubleValue = Double.parseDouble(parameter);
 			} catch (NoSuchElementException e) {
-//				errorCode = ArgsException.ErrorCode.MISSING_DOUBLE;
 				throw new ArgsException(ArgsException.ErrorCode.MISSING_DOUBLE);
 			} catch (NumberFormatException e) {
-//				errorParameter = parameter;
-//				errorCode = ArgsException.ErrorCode.INVALID_DOUBLE;
 				throw new ArgsException(ArgsException.ErrorCode.INVALID_DOUBLE, parameter);
 			}
 
